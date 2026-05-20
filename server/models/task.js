@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Task.belongsTo(models.User, {
-        foreignKey: "UserId",
+        foreignKey: "userId",
         as: "user",
       });
     }
@@ -43,7 +43,12 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       description: DataTypes.STRING,
-      dueDate: DataTypes.DATE,
+      dueDate: {
+        type: DataTypes.DATE,
+        validate: {
+          isAfter: new Date().toISOString(),
+        },
+      },
       priority: DataTypes.ENUM("low", "medium", "high"),
       isCompleted: {
         type: DataTypes.BOOLEAN,
