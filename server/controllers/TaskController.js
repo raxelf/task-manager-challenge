@@ -22,7 +22,7 @@ class TaskController {
         ];
       }
 
-      // get task by user id
+      // get owned task by user id
       const myTasks = await Task.findAll({
         where: { userId },
         order: orderClause,
@@ -39,15 +39,9 @@ class TaskController {
 
   static async getTaskById(req, res, next) {
     try {
-      const { id } = req.params;
-
-      // only owned task shown
-      const task = await Task.findOne({ where: { id } });
-      if (!task) throw new Error("TASK_NOT_FOUND");
-
       res.status(200).json({
         success: true,
-        data: task,
+        data: req.task, // got from middleware authz
       });
     } catch (err) {
       next(err);
@@ -86,14 +80,8 @@ class TaskController {
 
   static async deleteTask(req, res, next) {
     try {
-      // task id that will be deleted
-      const { id } = req.params;
-
-      await Task.destroy({
-        where: {
-          id,
-        },
-      });
+      // got from middleware authz to avoid redundancy
+      await req.task.destroy();
 
       res.status(204).end();
     } catch (err) {
