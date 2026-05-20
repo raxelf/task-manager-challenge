@@ -13,7 +13,10 @@ const errorHandler = (err, _req, res, _next) => {
   } else if (err.message === "INVALID_CREDENTIALS") {
     statusCode = 401;
     message = "Invalid email/password";
-  } else if (err.name === "JsonWebTokenError") {
+  } else if (
+    err.message === "UNAUTHORIZED" ||
+    err.name === "JsonWebTokenError"
+  ) {
     statusCode = 401;
     message = "Invalid token";
   }
