@@ -19,6 +19,9 @@ const errorHandler = (err, _req, res, _next) => {
   ) {
     statusCode = 401;
     errorMessage = "Invalid token";
+  } else if (err.message === "TASK_NOT_FOUND") {
+    statusCode = 404;
+    errorMessage = "Task not found.";
   }
 
   res.status(statusCode).json({
