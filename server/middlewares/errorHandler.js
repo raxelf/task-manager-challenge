@@ -12,13 +12,16 @@ const errorHandler = (err, _req, res, _next) => {
     errorMessage = err.errors[0].message;
   } else if (err.message === "INVALID_CREDENTIALS") {
     statusCode = 401;
-    message = "Invalid email/password";
+    errorMessage = "Invalid email/password";
   } else if (
     err.message === "UNAUTHORIZED" ||
     err.name === "JsonWebTokenError"
   ) {
     statusCode = 401;
-    message = "Invalid token";
+    errorMessage = "Invalid token";
+  } else if (err.message === "TASK_NOT_FOUND") {
+    statusCode = 404;
+    errorMessage = "Task not found.";
   }
 
   res.status(statusCode).json({
