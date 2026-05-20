@@ -10,6 +10,12 @@ const errorHandler = (err, _req, res, _next) => {
   ) {
     statusCode = 400;
     errorMessage = err.errors[0].message;
+  } else if (err.message === "INVALID_CREDENTIALS") {
+    statusCode = 401;
+    message = "Invalid email/password";
+  } else if (err.name === "JsonWebTokenError") {
+    statusCode = 401;
+    message = "Invalid token";
   }
 
   res.status(statusCode).json({
