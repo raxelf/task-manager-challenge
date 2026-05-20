@@ -3,7 +3,7 @@ const TaskController = require("../controllers/TaskController");
 const auth = require("../middlewares/auth");
 
 const express = require("express");
-const { default: authorization } = require("../middlewares/authorization");
+const { authorization } = require("../middlewares/authorization");
 
 const router = express.Router();
 

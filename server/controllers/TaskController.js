@@ -73,6 +73,21 @@ class TaskController {
 
   static async updateTask(req, res, next) {
     try {
+      const { title, description, dueDate, priority, isCompleted } = req.body;
+
+      await req.task.update({
+        title,
+        description,
+        dueDate,
+        priority,
+        isCompleted,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Task successfully updated.",
+        data: req.task,
+      });
     } catch (err) {
       next(err);
     }
