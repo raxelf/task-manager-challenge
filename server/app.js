@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // router
-app.use(router);
+app.use("/api/v1" ,router);
 
 // error handler
 app.use(errorHandler);
