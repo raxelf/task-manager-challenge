@@ -45,9 +45,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       dueDate: {
         type: DataTypes.DATE,
-        validate: {
-          isAfter: new Date().toISOString(),
-        },
       },
       priority: DataTypes.ENUM("low", "medium", "high"),
       isCompleted: {
