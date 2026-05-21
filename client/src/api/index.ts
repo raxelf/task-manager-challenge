@@ -24,7 +24,16 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       Cookies.remove('access_token')
-      window.location.href = '/login'
+      // Only redirect if we are not already on the login or register page
+      // and prevent redirect for the /login endpoint itself
+      const currentPath = window.location.pathname
+      if (
+        currentPath !== '/login' &&
+        currentPath !== '/register' &&
+        !error.config.url.includes('/login')
+      ) {
+        window.location.href = '/login'
+      }
     }
 
     return Promise.reject(error)

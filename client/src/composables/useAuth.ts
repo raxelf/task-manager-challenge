@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { doLogin, doRegister } from '@/api/auth'
 import Cookies from 'js-cookie'
-import type { LoginPayload, RegisterPayload } from '@/types/auth'
+import type { AuthResponse, LoginPayload, RegisterPayload } from '@/types/auth'
 import axios, { AxiosError } from 'axios'
 import { toast } from 'vue-sonner'
 
@@ -11,49 +11,54 @@ const useAuth = () => {
   const isLoading = ref(false)
 
   const login = async (payload: LoginPayload) => {
-    try {
-      isLoading.value = true
+    isLoading.value = true
 
-      const token = await doLogin(payload)
-      Cookies.set('access_token', token, { expires: 1 })
+    const loginPromise = doLogin(payload)
+      .then((token) => {
+        Cookies.set('access_token', token, { expires: 1 })
+        router.push('/')
+        return token
+      })
+      .finally(() => {
+        isLoading.value = false
+      })
 
-      toast.success('Welcome back!')
-      router.push('/')
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const axiosError = err as AxiosError<{ errors?: string }>
-
-        toast.error(axiosError.response?.data?.errors || 'Invalid login details')
-      } else {
-        toast.error('An unexpected error occurred')
-      }
-    } finally {
-      isLoading.value = false
-    }
+    toast.promise(loginPromise, {
+      loading: 'Logging in...',
+      success: 'Welcome back!',
+      error: (err: unknown) => {
+        if (axios.isAxiosError(err)) {
+          return err.response?.data?.errors || 'Invalid login details'
+        }
+        return 'An unexpected error occurred'
+      },
+    })
   }
 
   const register = async (payload: RegisterPayload) => {
-    try {
-      isLoading.value = true
+    isLoading.value = true
 
-      const response = await doRegister(payload)
+    const registerPromise = doRegister(payload)
+      .then((response) => {
+        if (response.success) {
+          router.push('/login')
+        }
+        return response
+      })
+      .finally(() => {
+        isLoading.value = false
+      })
 
-      if (response.success) {
-        toast.success(response.message || 'Account created successfully!')
-
-        router.push('/login')
-      }
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const axiosError = err as AxiosError<{ errors?: string }>
-
-        toast.error(axiosError.response?.data?.errors || 'Registration failed')
-      } else {
-        toast.error('An unexpected error occurred')
-      }
-    } finally {
-      isLoading.value = false
-    }
+    toast.promise(registerPromise, {
+      loading: 'Creating account...',
+      success: (data: AuthResponse) => data?.message || 'Account created successfully!',
+      error: (err: unknown) => {
+        if (axios.isAxiosError(err)) {
+          return err.response?.data?.errors || 'Registration failed'
+        }
+        return 'An unexpected error occurred'
+      },
+    })
   }
 
   const logout = () => {

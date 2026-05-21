@@ -1,7 +1,20 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import useTitle from '@/composables/useTitle'
+import useAuth from '@/composables/useAuth'
 
 useTitle('Login')
+
+const { login, isLoading } = useAuth()
+
+const form = ref({
+  email: '',
+  password: '',
+})
+
+const handleLogin = async () => {
+  await login(form.value)
+}
 </script>
 
 <template>
@@ -9,11 +22,12 @@ useTitle('Login')
     <h2 class="text-3xl font-semibold text-gray-900 mb-2">Welcome back</h2>
     <p class="text-sm text-gray-500 mb-8">Please enter your details to access your dashboard.</p>
 
-    <form class="space-y-6" @submit.prevent>
+    <form class="space-y-6" @submit.prevent="handleLogin">
       <!-- Email -->
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
+          v-model="form.email"
           type="email"
           id="email"
           placeholder="name@company.com"
@@ -26,6 +40,7 @@ useTitle('Login')
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
         <input
+          v-model="form.password"
           type="password"
           id="password"
           placeholder="••••••••"
@@ -37,9 +52,11 @@ useTitle('Login')
       <!-- Submit Button -->
       <button
         type="submit"
-        class="w-full py-2.5 px-4 text-white bg-primary hover:bg-blue-700 rounded-md transition-colors font-medium cursor-pointer"
+        :disabled="isLoading"
+        class="w-full py-2.5 px-4 text-white bg-primary hover:bg-blue-700 rounded-md transition-colors font-medium cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
       >
-        Login
+        <span v-if="isLoading">Loading...</span>
+        <span v-else>Login</span>
       </button>
     </form>
 
