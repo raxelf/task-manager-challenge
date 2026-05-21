@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import { doLogin, doRegister } from '@/api/auth'
 import Cookies from 'js-cookie'
 import type { AuthResponse, LoginPayload, RegisterPayload } from '@/types/auth'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { toast } from 'vue-sonner'
 
 const useAuth = () => {
