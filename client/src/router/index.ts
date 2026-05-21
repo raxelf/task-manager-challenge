@@ -5,11 +5,18 @@ import RegisterView from '@/views/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  // this is the dashboard, only authenticated can access
-  // guest automatically redirected to login page
+  // dashboard (protected)
   { path: '/', name: 'Home', component: HomeView, meta: { requiresAuth: true } },
-  { path: '/login', name: 'Login', component: LoginView },
-  { path: '/register', name: 'Register', component: RegisterView },
+
+  // guest auth layout
+  {
+    path: '/',
+    component: () => import('@/layouts/AuthPage.vue'),
+    children: [
+      { path: '/login', name: 'Login', component: LoginView },
+      { path: '/register', name: 'Register', component: RegisterView },
+    ],
+  },
 ]
 
 const router = createRouter({
