@@ -20,7 +20,8 @@
     "dayjs": "^1.11.20",
     "js-cookie": "^3.0.7",
     "vue": "^3.5.32",
-    "vue-router": "^5.0.7"
+    "vue-router": "^5.0.7",
+    "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
