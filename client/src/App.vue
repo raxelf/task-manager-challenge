@@ -1,11 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+import { Toaster } from 'vue-sonner'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
+    <Toaster position="top-center" richColors closeButton />
+    <RouterView />
+  </div>
 </template>
-
-<style scoped></style>
