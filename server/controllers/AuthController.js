@@ -31,7 +31,6 @@ class AuthController {
       const foundUser = await User.findOne({ where: { email } });
       if (!foundUser) throw new Error("INVALID_CREDENTIALS");
 
-      // comparePassword is an async function returning a Promise, so we must await it
       const isValidPassword = await comparePassword(
         password,
         foundUser.password,
