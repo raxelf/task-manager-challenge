@@ -14,8 +14,8 @@ A full-stack task management web application built as part of the technical asse
 | :---: | :---: | :---: |
 | ![Dashboard Desktop](client/docs/screenshots/dashboard_desktop.png) | ![Dashboard Tablet](client/docs/screenshots/dashboard_tablet.png) | ![Dashboard Mobile](client/docs/screenshots/dashboard_mobile.png) |
 
-### Adaptive Task Creation (Modal vs. Bottom Sheet)
-| Desktop View (Centered Modal) | Mobile View (Bottom Sheet) |
+### Task Creation
+| Desktop View | Mobile View |
 | :---: | :---: |
 | ![Create Task Desktop](client/docs/screenshots/dashboardCreateTask_desktop.png) | ![Create Task Mobile](client/docs/screenshots/dashboardCreateTask_mobile.png) |
 
