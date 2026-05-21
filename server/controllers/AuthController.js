@@ -31,8 +31,13 @@ class AuthController {
       const foundUser = await User.findOne({ where: { email } });
       if (!foundUser) throw new Error("INVALID_CREDENTIALS");
 
-      if (!comparePassword(password, foundUser.password))
+      const isValidPassword = await comparePassword(
+        password,
+        foundUser.password,
+      );
+      if (!isValidPassword) {
         throw new Error("INVALID_CREDENTIALS");
+      }
 
       const payload = {
         id: foundUser.id,
