@@ -5,8 +5,13 @@ import RegisterView from '@/views/RegisterView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
-  // dashboard (protected)
-  { path: '/', name: 'Home', component: HomeView, meta: { requiresAuth: true } },
+  // dashboard (protected) layout
+  {
+    path: '/',
+    component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [{ path: '', name: 'Home', component: HomeView }],
+  },
 
   // auth (guest only) layout
   {

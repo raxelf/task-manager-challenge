@@ -18,10 +18,9 @@ router.get("/tasks", TaskController.getMyTasks);
 router.post("/tasks", TaskController.createTask);
 
 // user can't disturb other users task (authz middleware)
-router.use(authorization);
-router.get("/task/:id", TaskController.getTaskById);
+router.get("/task/:id", authorization, TaskController.getTaskById);
 // user can toggle complete, edit title, desc, due dates, priority
-router.patch("/task/:id", TaskController.updateTask);
-router.delete("/task/:id", TaskController.deleteTask);
+router.patch("/task/:id", authorization, TaskController.updateTask);
+router.delete("/task/:id", authorization, TaskController.deleteTask);
 
 module.exports = router;

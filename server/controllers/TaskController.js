@@ -73,15 +73,16 @@ class TaskController {
 
   static async updateTask(req, res, next) {
     try {
-      const { title, description, dueDate, priority, isCompleted } = req.body;
+      const fieldsToUpdate = {};
+      const allowedFields = ["title", "description", "dueDate", "priority", "isCompleted"];
 
-      await req.task.update({
-        title,
-        description,
-        dueDate,
-        priority,
-        isCompleted,
+      allowedFields.forEach((field) => {
+        if (req.body[field] !== undefined) {
+          fieldsToUpdate[field] = req.body[field];
+        }
       });
+
+      await req.task.update(fieldsToUpdate);
 
       res.status(200).json({
         success: true,
